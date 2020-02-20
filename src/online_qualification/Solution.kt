@@ -7,8 +7,6 @@ fun main() {
     File("input/online_qualification").listFiles()?.forEach {
         computeSolution(it)
     }
-
-    //computeSolution(File(File("input/online_qualification"), "a_example.txt"))
 }
 
 fun computeSolution(file: File) {
@@ -19,7 +17,6 @@ fun computeSolution(file: File) {
         val noOfLibraries = lineOneArr[1].toInt()
 
         val totalGlobalNoOfDays = lineOneArr[2].toInt()
-
 
         val allBooks = mutableListOf<Book>()    // list of All available books
 
@@ -56,7 +53,6 @@ fun computeSolution(file: File) {
 
         ///// output
 
-
         File(File("output/online_qualification").apply { if (!exists()) mkdir() }, "${file.name}_out.txt").printWriter().use { out ->
 
             //Start work
@@ -74,9 +70,8 @@ fun computeSolution(file: File) {
 
 
 
-
             allLibraries.forEach {
-                if (totalShippingCount + it.noOfDaysToSignUp < totalGlobalNoOfDays) {
+                if ((totalShippingCount + it.noOfDaysToSignUp < totalGlobalNoOfDays) && isLibraryUsable(scannedBooks, it)) {
                     totalShippingCount += it.noOfDaysToSignUp
                     librariesToUse.add(it)
                     librariesToUseIdStr.append("${it.id} ")
@@ -85,7 +80,6 @@ fun computeSolution(file: File) {
 
 
             out.println(librariesToUse.size) //first line
-
 
 
             librariesToUse.forEachIndexed { index, library ->
@@ -97,24 +91,32 @@ fun computeSolution(file: File) {
                 var booksCount = 0
 
                 library.listOfBooks.forEachIndexed { index, book ->
-                    if (!scannedBooks.contains(book)){
-                        scannedBooks.add(book)
-                        booksToSendStr.append("${book.id} ")
-                        booksCount++
-                    }
+                    booksToSendStr.append("${book.id} ")
+                    booksCount++
                 }
 
                 libraryIdAndNoOfBooksStr.append("$booksCount")
 
                 out.println(libraryIdAndNoOfBooksStr.toString()) // Second line -->repeated
-                out.println(booksToSendStr.toString().trimEnd())
+
+                val outToPrint = booksToSendStr.toString()
+                out.println(if (outToPrint.isBlank()) "0" else outToPrint.trimEnd())
 
             }
-
         }
-
     }
+}
 
+fun isLibraryUsable(scannedBooks: MutableList<Book>, library: Library): Boolean {
+
+    var isLibraryUsable = false
+    library.listOfBooks.forEach {
+        if (!scannedBooks.contains(it)){
+            isLibraryUsable = true
+            scannedBooks.add(it)
+        }
+    }
+    return isLibraryUsable
 }
 
 
