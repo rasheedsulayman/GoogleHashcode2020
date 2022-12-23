@@ -7,7 +7,7 @@ Score: 25,362,907 <br/></br>
 Rank: 5th in Nigeria
 
 ## Team members:
- - [@r4sh33d](https://github.com/r4sh33d)
+ - [@rasheedsulayman](https://github.com/rasheedsulayman)
 
  - [@corneliuze](https://github.com/corneliuze) 
 
